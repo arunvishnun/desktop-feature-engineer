@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "taskId": "stream-cancel-state",
+  "goal": "Show and preserve a correct cancelled state for an active agent response.",
+  "mode": "guided",
+  "acceptanceCriteria": [
+    "The user can cancel an active response from the existing chat UI.",
+    "Cancellation produces one terminal state and survives application restart.",
+    "The renderer receives no direct Claude Agent SDK or Node.js capability."
+  ],
+  "assumptions": [
+    "The repository already has query cancellation and local session persistence boundaries."
+  ],
+  "nodes": [
+    {
+      "id": "discover-cancel-path",
+      "title": "Trace current cancellation",
+      "goal": "Identify the existing cancellation, event, persistence, and UI path.",
+      "kind": "discovery",
+      "dependencies": [],
+      "inputs": ["Repository instructions and current implementation"],
+      "outputs": ["Evidence-backed affected-layer map"],
+      "acceptance": ["Every affected process and existing owner is identified by path"],
+      "checks": ["Inspect a comparable request lifecycle and its tests"],
+      "risk": "low",
+      "status": "ready",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "define-terminal-contract",
+      "title": "Define cancelled terminal state",
+      "goal": "Establish one serializable contract for cancellation across process boundaries.",
+      "kind": "contract",
+      "dependencies": ["discover-cancel-path"],
+      "inputs": ["Affected-layer map and existing event types"],
+      "outputs": ["Typed cancellation event and persistence contract"],
+      "acceptance": ["The contract represents one terminal cancelled state without SDK types"],
+      "checks": ["Type-check the shared contract and run contract tests"],
+      "risk": "medium",
+      "status": "pending",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "implement-vertical-slice",
+      "title": "Implement cancellation slice",
+      "goal": "Connect the existing owner, persistence, IPC, and UI through the verified contract.",
+      "kind": "runtime",
+      "dependencies": ["define-terminal-contract"],
+      "inputs": ["Typed cancellation event and persistence contract"],
+      "outputs": ["Working main-to-renderer cancellation path"],
+      "acceptance": [
+        "Cancellation produces one terminal state",
+        "Restart restores the cancelled state",
+        "Renderer authority is unchanged"
+      ],
+      "checks": [
+        "Run focused runtime, IPC, state, restart, and UI tests",
+        "Run type-check and relevant integration tests"
+      ],
+      "risk": "high",
+      "status": "pending",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "verify-integrated-feature",
+      "title": "Verify cancellation end to end",
+      "goal": "Prove acceptance criteria and security boundaries with integrated evidence.",
+      "kind": "review",
+      "dependencies": ["implement-vertical-slice"],
+      "inputs": ["Working cancellation path and layer-level test results"],
+      "outputs": ["Acceptance trace and final diff review"],
+      "acceptance": ["All required criteria have passing evidence or are explicitly reported not checked"],
+      "checks": ["Run the relevant end-to-end, build, security, and final diff checks"],
+      "risk": "medium",
+      "status": "pending",
+      "attempts": 0,
+      "evidence": []
+    }
+  ]
+}
